@@ -39,11 +39,11 @@ def connect_db():
     #     port='5432'
 
     conn = psycopg2.connect(
-    host=st.secrets["db_host"],
-    database=st.secrets["db_name"],
-    user=st.secrets["db_user"],
-    password=st.secrets["db_password"],
-    port=st.secrets["db_port"]
+    host=st.secrets["localhost"],
+    database=st.secrets["coba"],
+    user=st.secrets["postgres"],
+    password=st.secrets["240904"],
+    port=st.secrets["5432"]
     )
     return conn
 

@@ -89,7 +89,7 @@ if df is not None and not df.empty:
         st.error("Kolom 'waktu_laporan' tidak ditemukan dalam data!")
 
 # Mengonversi kolom 'waktu_laporan' menjadi datetime, dengan penanganan error
-df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
+# df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
 
 # Cek apakah ada nilai NaT setelah konversi
 if df['waktu_laporan'].isnull().any():

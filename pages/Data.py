@@ -5,14 +5,43 @@ import plotly.express as px
 
 # Fungsi untuk koneksi ke database
 def connect_db():
-    conn = psycopg2.connect(
-        dbname='coba',
-        user='postgres',
-        password='240904',
-        host='localhost',
-        port='5432'
-    )
-    return conn
+    try:
+        conn = psycopg2.connect(
+            dbname=os.getenv('DB_NAME'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            host=os.getenv('DB_HOST'),
+            port=os.getenv('DB_PORT')
+        )
+        return conn
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+conn = connect_db()
+if conn is None:
+    print("Koneksi ke database gagal!")
+else:
+    df = pd.read_sql_query(query, conn)
+
+def get_data_from_db(query):
+    conn = connect_db()
+    if conn is None:
+        print("Koneksi gagal!")
+        return None
+    try:
+        df = pd.read_sql_query(query, conn)
+        conn.close()  # Pastikan koneksi ditutup setelah digunakan
+        return df
+    except Exception as e:
+        print(f"Error saat membaca data: {e}")
+        return None
+
+query = "SELECT * FROM laporan"
+df = get_data_from_db(query)
+if df is not None:
+    print(df.head())
+
 
 # Judul aplikasi
 st.title("Data Laporan Call Center")

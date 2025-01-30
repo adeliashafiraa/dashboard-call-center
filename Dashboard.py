@@ -102,8 +102,22 @@ if df is not None:
 # st.subheader('Data Laporan')
 # st.dataframe(df)
 
-# Pastikan kolom 'waktu_laporan' ada dan diubah menjadi datetime
-df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'])
+# Memeriksa apakah kolom 'waktu_laporan' ada dalam dataframe
+if 'waktu_laporan' in df.columns:
+    print("Kolom 'waktu_laporan' ditemukan!")
+    print(df['waktu_laporan'].head())  # Menampilkan beberapa nilai pertama dalam kolom
+else:
+    print("Kolom 'waktu_laporan' tidak ditemukan!")
+
+# Mengonversi kolom 'waktu_laporan' menjadi datetime, dengan penanganan error
+df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
+
+# Cek apakah ada nilai NaT setelah konversi
+if df['waktu_laporan'].isnull().any():
+    print("Beberapa nilai tidak valid dan telah diubah menjadi NaT")
+    print(df[df['waktu_laporan'].isnull()])  # Menampilkan baris dengan NaT
+else:
+    print("Semua nilai berhasil dikonversi.")
 
 # Menambahkan kolom 'bulan' untuk pengelompokan berdasarkan bulan
 df['bulan'] = df['waktu_laporan'].dt.to_period('M').astype(str)  # Mengonversi Period ke string

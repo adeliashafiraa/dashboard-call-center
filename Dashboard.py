@@ -31,19 +31,12 @@ with st.container():
 st.title("Dashboard Data Call Center")
 
 def connect_db():
-    # conn = psycopg2.connect(
-    #     dbname='coba',
-    #     user='postgres',
-    #     password='240904',
-    #     host='localhost',
-    #     port='5432'
-
     conn = psycopg2.connect(
-    host=st.secrets["localhost"],
-    database=st.secrets["coba"],
-    user=st.secrets["postgres"],
-    password=st.secrets["240904"],
-    port=st.secrets["5432"]
+        host=st.secrets["db_host"],
+        database=st.secrets["db_name"],
+        user=st.secrets["db_user"],
+        password=st.secrets["db_password"],
+        port=st.secrets["db_port"]
     )
     return conn
 

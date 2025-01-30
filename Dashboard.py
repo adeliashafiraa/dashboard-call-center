@@ -102,11 +102,20 @@ if df is not None:
 # st.subheader('Data Laporan')
 # st.dataframe(df)
 
-# Pastikan kolom 'waktu_laporan' ada dan diubah menjadi datetime
-df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'])
+# # Pastikan kolom 'waktu_laporan' ada dan diubah menjadi datetime
+# df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'])
 
-# Menambahkan kolom 'bulan' untuk pengelompokan berdasarkan bulan
-df['bulan'] = df['waktu_laporan'].dt.to_period('M').astype(str)  # Mengonversi Period ke string
+# # Menambahkan kolom 'bulan' untuk pengelompokan berdasarkan bulan
+# df['bulan'] = df['waktu_laporan'].dt.to_period('M').astype(str)  # Mengonversi Period ke string
+
+# Cek beberapa nilai pertama di kolom waktu_laporan
+st.write(df['waktu_laporan'].head())
+
+# Mengonversi waktu_laporan menjadi datetime, dan mengabaikan kesalahan dengan errors='coerce'
+df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
+
+# Periksa apakah ada nilai yang gagal diubah (NaT)
+st.write(df[df['waktu_laporan'].isna()])
 
 # Menambahkan opsi "Semua Bulan" untuk melihat distribusi tipe laporan
 bulan_sorted = sorted(df['bulan'].unique(), key=lambda x: pd.to_datetime(x))

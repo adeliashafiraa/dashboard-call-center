@@ -89,22 +89,22 @@ if df is not None and not df.empty:
         st.error("Kolom 'waktu_laporan' tidak ditemukan dalam data!")
 
 # Mengonversi kolom 'waktu_laporan' menjadi datetime, dengan penanganan error
-# df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
+df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
 
 # Cek apakah ada nilai NaT setelah konversi
-# if df['waktu_laporan'].isnull().any():
-#     st.write("Beberapa nilai tidak valid dan telah diubah menjadi NaT")
-#     st.write(df[df['waktu_laporan'].isnull()])  # Menampilkan baris dengan NaT
-# else:
-#     st.write("Semua nilai berhasil dikonversi.")
+if df['waktu_laporan'].isnull().any():
+    st.write("Beberapa nilai tidak valid dan telah diubah menjadi NaT")
+    st.write(df[df['waktu_laporan'].isnull()])  # Menampilkan baris dengan NaT
+else:
+    st.write("Semua nilai berhasil dikonversi.")
 
 
 # Cek apakah ada nilai NaT setelah konversi
-# if df['waktu_laporan'].isnull().any():
-#     print("Beberapa nilai tidak valid dan telah diubah menjadi NaT")
-#     print(df[df['waktu_laporan'].isnull()])  # Menampilkan baris dengan NaT
-# else:
-#     print("Semua nilai berhasil dikonversi.")
+if df['waktu_laporan'].isnull().any():
+    print("Beberapa nilai tidak valid dan telah diubah menjadi NaT")
+    print(df[df['waktu_laporan'].isnull()])  # Menampilkan baris dengan NaT
+else:
+    print("Semua nilai berhasil dikonversi.")
 
 # Menambahkan kolom 'bulan' untuk pengelompokan berdasarkan bulan
 df['bulan'] = df['waktu_laporan'].dt.to_period('M').astype(str)  # Mengonversi Period ke string

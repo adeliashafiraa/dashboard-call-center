@@ -100,11 +100,11 @@ if df is not None and not df.empty:
 
 
 # Cek apakah ada nilai NaT setelah konversi
-if df['waktu_laporan'].isnull().any():
-    print("Beberapa nilai tidak valid dan telah diubah menjadi NaT")
-    print(df[df['waktu_laporan'].isnull()])  # Menampilkan baris dengan NaT
-else:
-    print("Semua nilai berhasil dikonversi.")
+# if df['waktu_laporan'].isnull().any():
+#     print("Beberapa nilai tidak valid dan telah diubah menjadi NaT")
+#     print(df[df['waktu_laporan'].isnull()])  # Menampilkan baris dengan NaT
+# else:
+#     print("Semua nilai berhasil dikonversi.")
 
 # Menambahkan kolom 'bulan' untuk pengelompokan berdasarkan bulan
 df['bulan'] = df['waktu_laporan'].dt.to_period('M').astype(str)  # Mengonversi Period ke string

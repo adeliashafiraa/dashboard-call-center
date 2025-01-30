@@ -4,6 +4,11 @@ import psycopg2
 import plotly.express as px
 import os
 
+db_user = os.getenv('DB_USER')
+db_password = os.getenv('DB_PASSWORD')
+db_host = os.getenv('DB_HOST')
+db_port = os.getenv('DB_PORT')
+
 st.set_page_config(
     page_title="dashboard data",
 )
@@ -38,11 +43,11 @@ def connect_db():
         # password=st.secrets["db_password"],
         # port=st.secrets["db_port"]
 
-        db_user = os.getenv('DB_USER')
-        db_password = os.getenv('DB_PASSWORD')
-        db_host = os.getenv('DB_HOST')
-        db_port = os.getenv('DB_PORT')
-        db_name = os.getenv('DB_NAME')
+            dbname="coba",
+            user=db_user,
+            password=db_password,
+            host=db_host,
+            port=db_port
     )
     return conn
 

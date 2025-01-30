@@ -4,22 +4,10 @@ import psycopg2
 import plotly.express as px
 import os
 
-# db_user = os.getenv('DB_USER')
-# db_password = os.getenv('DB_PASSWORD')
-# db_host = os.getenv('DB_HOST')
-# db_port = os.getenv('DB_PORT')
-
 st.set_page_config(
     page_title="dashboard data",
 )
 
-# logo_path = 'kominfo.png' 
-# if os.path.exists(logo_path):
-#     st.image(logo_path, width=50)  
-# else:
-#     st.error('Logo tidak ditemukan, periksa path file!')
-
-# Menampilkan logo dan tulisan di sampingnya
 logo_path = 'kominfo.png' 
 with st.container():
     cols = st.columns([1, 5])  # Mengatur rasio kolom: 1 untuk logo, 5 untuk teks
@@ -34,22 +22,6 @@ with st.container():
     """)
 
 st.title("Dashboard Data Call Center")
-
-# def connect_db():
-#     conn = psycopg2.connect(
-#         # host=st.secrets["db_host"],
-#         # database=st.secrets["db_name"],
-#         # user=st.secrets["db_user"],
-#         # password=st.secrets["db_password"],
-#         # port=st.secrets["db_port"]
-
-#             dbname="coba",
-#             user=db_user,
-#             password=db_password,
-#             host=db_host,
-#             port=db_port
-#     )
-#     return conn
 
 def connect_db():
     try:
@@ -79,7 +51,6 @@ def get_data_from_db(query):
     conn.close()
     return df
 
-# query = "SELECT * FROM laporan"  
 def get_data_from_db(query):
     conn = connect_db()
     if conn is None:

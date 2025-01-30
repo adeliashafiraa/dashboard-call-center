@@ -80,17 +80,13 @@ if df is not None:
 # st.dataframe(df)
 
 if df is not None and not df.empty:
+    # Periksa apakah kolom 'waktu_laporan' ada di dalam DataFrame
     if 'waktu_laporan' in df.columns:
-        print("Kolom 'waktu_laporan' ditemukan!")
-        print(df['waktu_laporan'].head())  # Menampilkan beberapa nilai pertama dalam kolom
+        # Menampilkan beberapa nilai pertama untuk memeriksa format kolom 'waktu_laporan'
+        st.write("Beberapa nilai pertama dalam kolom 'waktu_laporan':")
+        st.write(df['waktu_laporan'].head())  # Menampilkan nilai pertama dari kolom 'waktu_laporan'
     else:
-        print("Kolom 'waktu_laporan' tidak ditemukan!")
-else:
-    print("Data tidak berhasil dimuat!")
-
-# Menampilkan beberapa nilai pertama untuk memeriksa format kolom 'waktu_laporan'
-st.write("Beberapa nilai pertama dalam kolom 'waktu_laporan':")
-st.write(df['waktu_laporan'].head())  # Menampilkan nilai pertama dari kolom 'waktu_laporan'
+        st.error("Kolom 'waktu_laporan' tidak ditemukan dalam data!")
 
 # Mengonversi kolom 'waktu_laporan' menjadi datetime, dengan penanganan error
 df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')

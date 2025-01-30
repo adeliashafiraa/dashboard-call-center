@@ -88,8 +88,20 @@ if df is not None and not df.empty:
 else:
     print("Data tidak berhasil dimuat!")
 
+# Menampilkan beberapa nilai pertama untuk memeriksa format kolom 'waktu_laporan'
+st.write("Beberapa nilai pertama dalam kolom 'waktu_laporan':")
+st.write(df['waktu_laporan'].head())  # Menampilkan nilai pertama dari kolom 'waktu_laporan'
+
 # Mengonversi kolom 'waktu_laporan' menjadi datetime, dengan penanganan error
 df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
+
+# Cek apakah ada nilai NaT setelah konversi
+if df['waktu_laporan'].isnull().any():
+    st.write("Beberapa nilai tidak valid dan telah diubah menjadi NaT")
+    st.write(df[df['waktu_laporan'].isnull()])  # Menampilkan baris dengan NaT
+else:
+    st.write("Semua nilai berhasil dikonversi.")
+
 
 # Cek apakah ada nilai NaT setelah konversi
 if df['waktu_laporan'].isnull().any():

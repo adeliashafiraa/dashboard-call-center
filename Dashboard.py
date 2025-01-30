@@ -92,11 +92,11 @@ if df is not None and not df.empty:
 # df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
 
 # Cek apakah ada nilai NaT setelah konversi
-if df['waktu_laporan'].isnull().any():
-    st.write("Beberapa nilai tidak valid dan telah diubah menjadi NaT")
-    st.write(df[df['waktu_laporan'].isnull()])  # Menampilkan baris dengan NaT
-else:
-    st.write("Semua nilai berhasil dikonversi.")
+# if df['waktu_laporan'].isnull().any():
+#     st.write("Beberapa nilai tidak valid dan telah diubah menjadi NaT")
+#     st.write(df[df['waktu_laporan'].isnull()])  # Menampilkan baris dengan NaT
+# else:
+#     st.write("Semua nilai berhasil dikonversi.")
 
 
 # Cek apakah ada nilai NaT setelah konversi

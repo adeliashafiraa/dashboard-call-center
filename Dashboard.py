@@ -32,11 +32,17 @@ st.title("Dashboard Data Call Center")
 
 def connect_db():
     conn = psycopg2.connect(
-        host=st.secrets["db_host"],
-        database=st.secrets["db_name"],
-        user=st.secrets["db_user"],
-        password=st.secrets["db_password"],
-        port=st.secrets["db_port"]
+        # host=st.secrets["db_host"],
+        # database=st.secrets["db_name"],
+        # user=st.secrets["db_user"],
+        # password=st.secrets["db_password"],
+        # port=st.secrets["db_port"]
+
+        db_user = os.getenv('DB_USER')
+        db_password = os.getenv('DB_PASSWORD')
+        db_host = os.getenv('DB_HOST')
+        db_port = os.getenv('DB_PORT')
+        db_name = os.getenv('DB_NAME')
     )
     return conn
 

@@ -35,22 +35,6 @@ with st.container():
 
 st.title("Dashboard Data Call Center")
 
-# def connect_db():
-#     conn = psycopg2.connect(
-#         # host=st.secrets["db_host"],
-#         # database=st.secrets["db_name"],
-#         # user=st.secrets["db_user"],
-#         # password=st.secrets["db_password"],
-#         # port=st.secrets["db_port"]
-
-#             dbname="coba",
-#             user=db_user,
-#             password=db_password,
-#             host=db_host,
-#             port=db_port
-#     )
-#     return conn
-
 def connect_db():
     try:
         conn = psycopg2.connect(
@@ -73,13 +57,6 @@ else:
     df = pd.read_sql_query(query, conn)
 
 
-def get_data_from_db(query):
-    conn = connect_db()
-    df = pd.read_sql_query(query, conn)
-    conn.close()
-    return df
-
-# query = "SELECT * FROM laporan"  
 def get_data_from_db(query):
     conn = connect_db()
     if conn is None:
@@ -112,7 +89,7 @@ else:
     print("Data tidak berhasil dimuat!")
 
 # Mengonversi kolom 'waktu_laporan' menjadi datetime, dengan penanganan error
-# df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
+df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
 
 # Cek apakah ada nilai NaT setelah konversi
 if df['waktu_laporan'].isnull().any():
@@ -126,7 +103,6 @@ df['bulan'] = df['waktu_laporan'].dt.to_period('M').astype(str)  # Mengonversi P
 
 # Menambahkan opsi "Semua Bulan" untuk melihat distribusi tipe laporan
 bulan_sorted = sorted(df['bulan'].unique(), key=lambda x: pd.to_datetime(x))
-# bulan_tipe_options = ["Semua Bulan"] + list(df['bulan'].unique())
 bulan_tipe_options = ["Semua Bulan"] + bulan_sorted
 selected_bulan_tipe = st.selectbox('Pilih Bulan untuk Melihat Distribusi Tipe Laporan:', bulan_tipe_options, key="bulan_tipe")
 
@@ -150,7 +126,6 @@ fig_pie_tipe = px.pie(
 
 # Menampilkan diagram pie untuk tipe laporan
 st.plotly_chart(fig_pie_tipe)
-
 
 # Mengelompokkan data berdasarkan bulan dan kategori, mengabaikan kategori "-"
 kategori_counts = df[df['kategori'] != '-'].groupby(['bulan', 'kategori']).size().reset_index(name='jumlah_kategori')

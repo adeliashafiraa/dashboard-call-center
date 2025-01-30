@@ -112,7 +112,7 @@ else:
     print("Data tidak berhasil dimuat!")
 
 # Mengonversi kolom 'waktu_laporan' menjadi datetime, dengan penanganan error
-df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
+# df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
 
 # Cek apakah ada nilai NaT setelah konversi
 if df['waktu_laporan'].isnull().any():

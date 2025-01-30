@@ -109,63 +109,42 @@ if df is not None:
 # df['bulan'] = df['waktu_laporan'].dt.to_period('M').astype(str)  # Mengonversi Period ke string
 
 # Cek beberapa nilai pertama di kolom waktu_laporan
-st.write(df['waktu_laporan'].head())
+# Periksa apakah data berhasil diambil
+if df is not None:
+    st.write(df.head())  # Tampilkan data pertama untuk pengecekan
 
-# Mengonversi waktu_laporan menjadi datetime, dan mengabaikan kesalahan dengan errors='coerce'
-df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
+    # Pastikan kolom 'waktu_laporan' ada dan ubah menjadi datetime
+    df['waktu_laporan'] = pd.to_datetime(df['waktu_laporan'], errors='coerce')
 
-# Periksa apakah ada nilai yang gagal diubah (NaT)
-st.write(df[df['waktu_laporan'].isna()])
+    # Menampilkan baris dengan nilai NaT (jika ada)
+    st.write("Data yang gagal dikonversi:", df[df['waktu_laporan'].isna()])
 
-# Menambahkan opsi "Semua Bulan" untuk melihat distribusi tipe laporan
-bulan_sorted = sorted(df['bulan'].unique(), key=lambda x: pd.to_datetime(x))
-# bulan_tipe_options = ["Semua Bulan"] + list(df['bulan'].unique())
-bulan_tipe_options = ["Semua Bulan"] + bulan_sorted
-selected_bulan_tipe = st.selectbox('Pilih Bulan untuk Melihat Distribusi Tipe Laporan:', bulan_tipe_options, key="bulan_tipe")
+    # Menambahkan kolom 'bulan' untuk pengelompokan
+    df['bulan'] = df['waktu_laporan'].dt.to_period('M').astype(str)
 
-# Filter data berdasarkan bulan yang dipilih
-if selected_bulan_tipe == "Semua Bulan":
-    tipe_laporan_counts_filtered = df['tipe_laporan'].value_counts().reset_index()
+    # Menampilkan data berdasarkan bulan dan tipe laporan
+    bulan_sorted = sorted(df['bulan'].unique(), key=lambda x: pd.to_datetime(x))
+    bulan_tipe_options = ["Semua Bulan"] + bulan_sorted
+    selected_bulan_tipe = st.selectbox('Pilih Bulan untuk Melihat Distribusi Tipe Laporan:', bulan_tipe_options)
+
+    if selected_bulan_tipe == "Semua Bulan":
+        tipe_laporan_counts_filtered = df['tipe_laporan'].value_counts().reset_index()
+    else:
+        tipe_laporan_counts_filtered = df[df['bulan'] == selected_bulan_tipe]['tipe_laporan'].value_counts().reset_index()
+
+    tipe_laporan_counts_filtered.columns = ['tipe_laporan', 'jumlah_laporan']
+
+    # Visualisasi distribusi tipe laporan
+    fig_pie_tipe = px.pie(
+        tipe_laporan_counts_filtered,
+        names='tipe_laporan',
+        values='jumlah_laporan',
+        title=f'Distribusi Tipe Laporan pada Bulan {selected_bulan_tipe}' if selected_bulan_tipe != "Semua Bulan" else "Distribusi Tipe Laporan untuk Semua Bulan",
+        labels={'tipe_laporan': 'Tipe Laporan', 'jumlah_laporan': 'Jumlah Laporan'}
+    )
+    st.plotly_chart(fig_pie_tipe)
 else:
-    tipe_laporan_counts_filtered = df[df['bulan'] == selected_bulan_tipe]['tipe_laporan'].value_counts().reset_index()
-
-# Menamai kolom untuk visualisasi
-tipe_laporan_counts_filtered.columns = ['tipe_laporan', 'jumlah_laporan']
-
-# Membuat diagram pie untuk distribusi tipe laporan
-fig_pie_tipe = px.pie(
-    tipe_laporan_counts_filtered,
-    names='tipe_laporan',
-    values='jumlah_laporan',
-    title=f'Distribusi Tipe Laporan pada Bulan {selected_bulan_tipe}' if selected_bulan_tipe != "Semua Bulan" else "Distribusi Tipe Laporan untuk Semua Bulan",
-    labels={'tipe_laporan': 'Tipe Laporan', 'jumlah_laporan': 'Jumlah Laporan'}
-)
-
-# Menampilkan diagram pie untuk tipe laporan
-st.plotly_chart(fig_pie_tipe)
-
-
-# Mengelompokkan data berdasarkan bulan dan kategori, mengabaikan kategori "-"
-kategori_counts = df[df['kategori'] != '-'].groupby(['bulan', 'kategori']).size().reset_index(name='jumlah_kategori')
-
-# Menambahkan opsi "Semua Bulan" ke dalam filter bulan
-bulan_options = ["Semua Bulan"] + list(kategori_counts['bulan'].unique())
-selected_bulan = st.selectbox('Pilih Bulan untuk Melihat Distribusi Kategori:', bulan_options)
-
-# Filter data berdasarkan bulan yang dipilih
-if selected_bulan == "Semua Bulan":
-    kategori_counts_filtered = kategori_counts
-else:
-    kategori_counts_filtered = kategori_counts[kategori_counts['bulan'] == selected_bulan]
-
-# Membuat diagram pie untuk distribusi kategori laporan
-fig_pie_kategori = px.pie(kategori_counts_filtered, names='kategori', values='jumlah_kategori', 
-                          title=f'Distribusi Kategori Laporan pada Bulan {selected_bulan}' if selected_bulan != "Semua Bulan" else "Distribusi Kategori Laporan untuk Semua Bulan",
-                          labels={'kategori': 'Kategori', 'jumlah_kategori': 'Jumlah Laporan'})
-
-# Menampilkan diagram pie untuk kategori
-st.plotly_chart(fig_pie_kategori)
-
+    st.error("Data gagal diambil dari database!")
 # Pilihan untuk memilih tipe laporan atau semua
 tipe_laporan_options = ['Semua'] + list(df['tipe_laporan'].unique())
 tipe_laporan = st.selectbox('Pilih Tipe Laporan', tipe_laporan_options)

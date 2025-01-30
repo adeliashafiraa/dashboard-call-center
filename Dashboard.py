@@ -4,10 +4,10 @@ import psycopg2
 import plotly.express as px
 import os
 
-db_user = os.getenv('DB_USER')
-db_password = os.getenv('DB_PASSWORD')
-db_host = os.getenv('DB_HOST')
-db_port = os.getenv('DB_PORT')
+# db_user = os.getenv('DB_USER')
+# db_password = os.getenv('DB_PASSWORD')
+# db_host = os.getenv('DB_HOST')
+# db_port = os.getenv('DB_PORT')
 
 st.set_page_config(
     page_title="dashboard data",
@@ -35,21 +35,40 @@ with st.container():
 
 st.title("Dashboard Data Call Center")
 
-def connect_db():
-    conn = psycopg2.connect(
-        # host=st.secrets["db_host"],
-        # database=st.secrets["db_name"],
-        # user=st.secrets["db_user"],
-        # password=st.secrets["db_password"],
-        # port=st.secrets["db_port"]
+# def connect_db():
+#     conn = psycopg2.connect(
+#         # host=st.secrets["db_host"],
+#         # database=st.secrets["db_name"],
+#         # user=st.secrets["db_user"],
+#         # password=st.secrets["db_password"],
+#         # port=st.secrets["db_port"]
 
-            dbname="coba",
-            user=db_user,
-            password=db_password,
-            host=db_host,
-            port=db_port
-    )
-    return conn
+#             dbname="coba",
+#             user=db_user,
+#             password=db_password,
+#             host=db_host,
+#             port=db_port
+#     )
+#     return conn
+
+def connect_db():
+    try:
+        conn = psycopg2.connect(
+            dbname=os.getenv('DB_NAME'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            host=os.getenv('DB_HOST'),
+            port=os.getenv('DB_PORT')
+        )
+        return conn
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+# Contoh penggunaan
+conn = connect_db()
+if conn is None:
+    print("Koneksi ke database gagal!")
 
 def get_data_from_db(query):
     conn = connect_db()

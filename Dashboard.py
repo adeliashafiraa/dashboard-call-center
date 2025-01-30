@@ -69,6 +69,9 @@ def connect_db():
 conn = connect_db()
 if conn is None:
     print("Koneksi ke database gagal!")
+else:
+    df = pd.read_sql_query(query, conn)
+
 
 def get_data_from_db(query):
     conn = connect_db()
@@ -76,8 +79,24 @@ def get_data_from_db(query):
     conn.close()
     return df
 
-query = "SELECT * FROM laporan"  
+# query = "SELECT * FROM laporan"  
+def get_data_from_db(query):
+    conn = connect_db()
+    if conn is None:
+        print("Koneksi gagal!")
+        return None
+    try:
+        df = pd.read_sql_query(query, conn)
+        conn.close()  # Pastikan koneksi ditutup setelah digunakan
+        return df
+    except Exception as e:
+        print(f"Error saat membaca data: {e}")
+        return None
+
+query = "SELECT * FROM laporan"
 df = get_data_from_db(query)
+if df is not None:
+    print(df.head())
 
 # Menampilkan data di Streamlit (optional, hanya jika ingin menampilkan data mentah)
 # st.subheader('Data Laporan')
